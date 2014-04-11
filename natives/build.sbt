@@ -10,12 +10,17 @@ addCompilerPlugin("org.scala-lang.plugins" % "macro-paradise" % "2.0.0-SNAPSHOT"
 publishMavenStyle := true
 
 publishTo <<= version { (v: String) =>
-  val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT")) 
-    Some("snapshots" at nexus + "content/repositories/snapshots") 
+  if (v.trim.endsWith("SNAPSHOT"))
+    Some("tresata-snapshots" at "http://server01:8080/archiva/repository/snapshots")
   else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+    Some("tresata-releases"  at "http://server01:8080/archiva/repository/internal")
 }
+
+credentials += Credentials(Path.userHome / ".m2" / "credentials_internal")
+
+credentials += Credentials(Path.userHome / ".m2" / "credentials_snapshots")
+
+credentials += Credentials(Path.userHome / ".m2" / "credentials_proxy")
 
 publishArtifact in Test := false
 
